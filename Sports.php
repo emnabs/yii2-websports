@@ -1,9 +1,9 @@
 <?php
 
-namespace emhome\sports;
+namespace emhome\websports;
 
 use Yii;
-use yii\helpers\FileHelper;
+use yii\base\Component;
 
 /**
  * 体育赛事比赛数据获取组件
@@ -11,7 +11,7 @@ use yii\helpers\FileHelper;
  * @author emhome <emhome@163.com>
  * @since 2.0
  */
-class Sports extends \yii\base\Component {
+class Sports extends Component {
 
     /**
      * @var string BaseTranst transport instance.

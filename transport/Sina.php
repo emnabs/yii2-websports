@@ -1,10 +1,6 @@
 <?php
 
-namespace common\components\sports\transport;
-
-use Yii;
-use yii\helpers\FileHelper;
-use common\components\sports\src\BaseTranst;
+namespace emhome\websports\transport;
 
 /**
  * 新浪体育接口API基类
@@ -12,7 +8,7 @@ use common\components\sports\src\BaseTranst;
  * @author emhome <emhome@163.com>
  * @since 2.0
  */
-class Sina extends BaseTranst {
+class Sina extends \emhome\websports\src\BaseTranst {
 
     /**
      * 球员数据标签

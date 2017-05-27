@@ -39,7 +39,7 @@ return [
     'components' => [
 	//....
         'sports' => [
-            'class' => 'emhome\sports\Sports',
+            'class' => 'emhome\websports\Sports',
         ],
 	//....
     ]

@@ -1,10 +1,6 @@
 <?php
 
-namespace common\components\sports\transport;
-
-use Yii;
-use yii\helpers\FileHelper;
-use common\components\sports\src\BaseTranst;
+namespace emhome\websports\transport;
 
 /**
  * 搜达体育
@@ -12,7 +8,7 @@ use common\components\sports\src\BaseTranst;
  * @author emhome <emhome@163.com>
  * @since 2.0
  */
-class Soda extends BaseTranst {
+class Soda extends \emhome\websports\src\BaseTranst {
 
     /**
      * 请求地址
@@ -92,37 +88,51 @@ class Soda extends BaseTranst {
             'freekick' => '任意球',
             'header' => '头球',
         ];
-        $table = preg_replace("'<table[^>]*?>'si", "", $table);
-        $table = preg_replace("'<tr[^>]*?>'si", "", $table);
-        $table = preg_replace("'<(td|th)[^>]*?>'si", "", $table);
-        $table = preg_replace("'<\/(td|th)>'si", "\t", $table);
-        $table = preg_replace("'\t<\/tr>'si", "\n", $table);
-        $string = strip_tags($table);
+
+        $patterns = [
+            0 => "'<table[^>]*?>'si",
+            1 => "'<tr[^>]*?>'si",
+            2 => "'<(td|th)[^>]*?>'si",
+            3 => "'<\/(td|th)>'si",
+            4 => "'\t<\/tr>'si",
+        ];
+        $replacements = [
+            0 => '',
+            1 => '',
+            2 => '',
+            3 => "\t",
+            4 => "\n",
+        ];
+
+        ksort($patterns);
+        ksort($replacements);
+
+        $string = preg_replace($patterns, $replacements, $table);
+
         $data = [];
-        $table = explode("\n", $string);
+        $tableFrame = explode("\n", strip_tags($string));
 
         $keys = [];
-        foreach ($table as $key => $line) {
+        foreach ($tableFrame as $key => $line) {
             $item = explode("\t", $line);
-            if (count($item) > 1) {
-                array_filter($item);
-                if (!$key) {
-                    foreach ($item as $it) {
-                        $keys[] = array_search($it, $headers);
-                    }
-                } else {
-                    $item = array_combine($keys, $item);
-                    $item['ranking'] = $key;
-                    $data[] = [
-                        'seasonid' => $id,
-                        'ranking' => $key,
-                        'teamname' => $item['teamname'],
-                        'playername' => $item['playername'],
-                        'goal' => $item['goal'],
-                        'penalty' => $item['penalty'],
-                    ];
-                }
+            if (empty($item)) {
+                continue;
             }
+            if (!$key) {
+                foreach ($item as $it) {
+                    $keys[] = array_search($it, $headers);
+                }
+                continue;
+            }
+            $temp = array_combine($keys, $item);
+            $data[] = [
+                'seasonid' => $id,
+                'ranking' => $key,
+                'teamname' => $temp['teamname'],
+                'playername' => $temp['playername'],
+                'goal' => $temp['goal'],
+                'penalty' => $temp['penalty'],
+            ];
         }
         return $data;
     }

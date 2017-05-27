@@ -1,22 +1,9 @@
 <?php
 
-namespace common\components\sports\src;
+namespace emhome\websports\src;
 
 /**
- * SmserInterface is the interface that should be implemented by smser classes.
- *
- * A smser should mainly support creating and sending [[MessageInterface|sms messages]]. It should
- * also support composition of the message body through the view rendering mechanism. For example,
- *
- * ```php
- * Yii::$app->smser->compose('contact/html', ['contactForm' => $form])
- *     ->setFrom('from@domain.com')
- *     ->setTo($form->email)
- *     ->setSubject($form->subject)
- *     ->send();
- * ```
- *
- * @see MessageInterface
+ * ApiInterface is the interface that should be implemented by implemented classes.
  *
  * @author emhome <emhome@163.com>
  * @since 2.0

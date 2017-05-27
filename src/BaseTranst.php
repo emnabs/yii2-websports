@@ -1,15 +1,12 @@
 <?php
 
-namespace common\components\sports\src;
+namespace emhome\websports\src;
 
-use Yii;
-use yii\helpers\FileHelper;
 use yii\base\Object;
-use common\helpers\Utils;
 use yii\web\Response;
 
 /**
- * 新浪体育接口API基类
+ * 赛事数据接口基类
  *
  * @author emhome <emhome@163.com>
  * @since 2.0
@@ -60,11 +57,9 @@ abstract class BaseTranst extends Object implements ApiInterface {
     }
 
     /**
-     * Sets message signature
-     * @param array|callable|\Swift_Signer $season signature specification.
-     * See [[addSignature()]] for details on how it should be specified.
+     * Sets season
+     * @param string|integer $season season
      * @return $this self reference.
-     * @since 2.0.6
      */
     public function setSeason($season) {
         $this->_season = $season;
@@ -79,9 +74,8 @@ abstract class BaseTranst extends Object implements ApiInterface {
     }
 
     /**
-     * Sets message signature
-     * @param array|callable|\Swift_Signer $round signature specification.
-     * See [[addSignature()]] for details on how it should be specified.
+     * Sets round
+     * @param array $round round
      * @return $this self reference.
      */
     public function setRound($round) {
@@ -97,9 +91,8 @@ abstract class BaseTranst extends Object implements ApiInterface {
     }
 
     /**
-     * Sets message signature
-     * @param array|callable|\Swift_Signer $group signature specification.
-     * See [[addSignature()]] for details on how it should be specified.
+     * Sets group
+     * @param array $group group
      * @return $this self reference.
      */
     public function setGroup($group) {
@@ -108,30 +101,95 @@ abstract class BaseTranst extends Object implements ApiInterface {
     }
 
     /**
-     * Sets message signature
-     * @param array|callable|\Swift_Signer $group signature specification.
-     * See [[addSignature()]] for details on how it should be specified.
-     * @return $this self reference.
+     * Sets params
+     * @param array $params params specification.
      */
     public function setParams($params) {
         $this->params = $params;
     }
 
     /**
-     * 获取状态信息
+     * 接口请求执行
      *
-     * @return string
+     * @return minxed
      */
     public function execute() {
-        $url = $this->url;
-        if (!empty($this->params)) {
-            $url = $this->url . '?' . http_build_query($this->params);
-        }
-        $data = Utils::httpGet($url);
-        if ($this->format == Response::FORMAT_JSON) {
+        $data = self::httpGet($this->url, $this->params);
+        if ($this->format == Response::FORMAT_JSON && $data) {
             return \yii\helpers\Json::decode($data);
         }
         return $data;
+    }
+
+    /**
+     * GET 请求
+     * @param string $url
+     * @param string $param
+     */
+    protected static function httpGet($url, $param = []) {
+        $paramSplitChar = '?';
+        $ch = curl_init();
+        //格式化url
+        $parsedUrl = parse_url($url);
+        if (isset($parsedUrl['scheme']) && $parsedUrl['scheme'] == "https") {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        }
+        if (!isset($parsedUrl['host'])) {
+            return false;
+        }
+        if (isset($parsedUrl['query'])) {
+            $paramSplitChar = '&';
+        }
+        if (is_array($param) && !empty($param)) {
+            $param = $paramSplitChar . http_build_query($param);
+        }
+        if (isset($parsedUrl['fragment'])) {
+            $url = str_replace('#', $param . '#', $url);
+        } else {
+            $url .= $param;
+        }
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        $status = curl_getinfo($ch);
+        curl_close($ch);
+
+        if (intval($status["http_code"]) == 200) {
+            return $response;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * POST 请求
+     * @param string $url
+     * @param array $param
+     * @return string content
+     */
+    protected static function httpPost($url, $param = []) {
+        $ch = curl_init();
+        if (stripos($url, "https://") !== FALSE) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        }
+        if (is_array($param) && !empty($param)) {
+            $param = http_build_query($param);
+        }
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $param);
+        $response = curl_exec($ch);
+        $status = curl_getinfo($ch);
+        curl_close($ch);
+        if (intval($status["http_code"]) == 200) {
+            return $response;
+        } else {
+            return false;
+        }
     }
 
 }

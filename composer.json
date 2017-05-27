@@ -17,8 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "emhome\\websports\\": "src/"
-	    "emhome\\websports\\": "transport/"
+            "emhome\\websports\\": ""
         }
     }
 }

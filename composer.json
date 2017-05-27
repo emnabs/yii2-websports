@@ -4,7 +4,7 @@
     "keywords": ["yii2", "extension", "sports", "event", "plugin"],
     "homepage": "https://github.com/emnabs/yii2-websports",
     "type": "yii2-extension",
-    "license": "MIT",
+    "license": "BSD 3-Clause",
     "authors": [
         {
             "name": "emhome",

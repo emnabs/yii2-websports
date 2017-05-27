@@ -3,7 +3,11 @@ Yii2 Sports Event Data Component
 
 Provides settings for sporting events, interfaces, custom implementations, pulls, remote interfaces, and data content related to sports competitions. The basic interface implements the definition of soccer data, such as schedule, game, score list, player list.
 
-[![Latest Stable Version](https://poser.pugx.org/emnabs/yii2-websports/v/stable)](https://packagist.org/packages/emnabs/yii2-websports) [![Total Downloads](https://poser.pugx.org/emnabs/yii2-websports/downloads)](https://packagist.org/packages/emnabs/yii2-websports) [![License](https://poser.pugx.org/emnabs/yii2-websports/license)](https://packagist.org/packages/emnabs/yii2-websports)
+[![Build Status](https://travis-ci.org/emnabs/yii2-websports.svg?branch=master)](https://travis-ci.org/emnabs/yii2-websports)
+[![Latest Stable Version](https://poser.pugx.org/emnabs/yii2-websports/v/stable.png)](https://packagist.org/packages/emnabs/yii2-websports)
+[![Total Downloads](https://poser.pugx.org/emnabs/yii2-websports/downloads.png)](https://packagist.org/packages/emnabs/yii2-websports)
+[![License](https://poser.pugx.org/emnabs/yii2-websports/license.png)](https://packagist.org/packages/emnabs/yii2-websports)
+
 
 Installation   
 ------------

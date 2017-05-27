@@ -1,16 +1,15 @@
-Yii2 Sports Event Data Component
+# Yii2 Websports Component
 ==========
 
 Provides settings for sporting events, interfaces, custom implementations, pulls, remote interfaces, and data content related to sports competitions. The basic interface implements the definition of soccer data, such as schedule, game, score list, player list.
 
-[![Build Status](https://travis-ci.org/emnabs/yii2-websports.svg?branch=master)](https://travis-ci.org/emnabs/yii2-websports)
 [![Latest Stable Version](https://poser.pugx.org/emnabs/yii2-websports/v/stable.png)](https://packagist.org/packages/emnabs/yii2-websports)
 [![Total Downloads](https://poser.pugx.org/emnabs/yii2-websports/downloads.png)](https://packagist.org/packages/emnabs/yii2-websports)
 [![License](https://poser.pugx.org/emnabs/yii2-websports/license.png)](https://packagist.org/packages/emnabs/yii2-websports)
 
 
-Installation   
-------------
+## Installation
+---------------
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -28,8 +27,8 @@ or add
 
 to the require section of your composer.json.
 
-Usage
------
+## Usage
+--------
 
 To use this extension, you have to configure the Connection class in your application configuration:
 
@@ -46,26 +45,21 @@ return [
     ]
 ];
 ```
-Usage example:
+
+Usage example
+
 ```php
 Yii::$app->sports->compose()->schedule();
 ```
 
-Installation
-------------
+## 包含接口
+-----------
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+* [新浪体育](http://sports.sina.com.cn/)
+* [搜达足球](http://www.sodasoccer.com/)
 
-Either run
 
-```
-php composer.phar require --prefer-dist emnabs/yii2-websports "*"
-```
+## License
+----------
 
-or add
-
-```json
-"emnabs/yii2-websports": "*"
-```
-
-to the require section of your composer.json.
+**yii2-websports** is released under the `BSD 3-Clause` License. See the bundled `LICENSE.md` for details.

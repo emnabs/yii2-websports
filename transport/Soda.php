@@ -1,0 +1,130 @@
+<?php
+
+namespace common\components\sports\transport;
+
+use Yii;
+use yii\helpers\FileHelper;
+use common\components\sports\src\BaseTranst;
+
+/**
+ * 搜达体育
+ *
+ * @author emhome <emhome@163.com>
+ * @since 2.0
+ */
+class Soda extends BaseTranst {
+
+    /**
+     * 请求地址
+     * @var string
+     */
+    public $url = 'http://www.sodasoccer.com';
+
+    /**
+     * 状态信息
+     * @var string
+     */
+    public $format = 'html';
+
+    /**
+     * 页面路径
+     * @var string
+     */
+    public $path = '/top/{id}/player_goal.html';
+
+    /**
+     * @inheritdoc
+     */
+    public function setUrl($url) {
+        $this->url = $url;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function schedule() {
+        return;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function lineup($matchid) {
+        return;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function standing() {
+        return;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function playerOrder($type = null, $limit = 50) {
+        $response = $this->execute();
+        $content = preg_replace("/[\t\n\r]+/", "", $response);
+        preg_match('/<div class=\"odtable\"><table[^>]*?>(.*)<\/table><\/div>/', $content, $matches);
+        return $this->tableToArray($matches[1], $this->getSeason());
+    }
+
+    /**
+     * 获取赛事射手榜
+     */
+    public function scorer($id) {
+        $path = str_replace('{id}', $id, $this->path);
+        $this->setUrl($this->url . $path);
+        return $this->playerOrder();
+    }
+
+    /**
+     * 表格转数组
+     */
+    private function tableToArray($table, $id) {
+        $headers = [
+            'playername' => '球员',
+            'teamname' => '球队',
+            'goal' => '进球',
+            'normal' => '普通进球',
+            'penalty' => '点球',
+            'freekick' => '任意球',
+            'header' => '头球',
+        ];
+        $table = preg_replace("'<table[^>]*?>'si", "", $table);
+        $table = preg_replace("'<tr[^>]*?>'si", "", $table);
+        $table = preg_replace("'<(td|th)[^>]*?>'si", "", $table);
+        $table = preg_replace("'<\/(td|th)>'si", "\t", $table);
+        $table = preg_replace("'\t<\/tr>'si", "\n", $table);
+        $string = strip_tags($table);
+        $data = [];
+        $table = explode("\n", $string);
+
+        $keys = [];
+        foreach ($table as $key => $line) {
+            $item = explode("\t", $line);
+            if (count($item) > 1) {
+                array_filter($item);
+                if (!$key) {
+                    foreach ($item as $it) {
+                        $keys[] = array_search($it, $headers);
+                    }
+                } else {
+                    $item = array_combine($keys, $item);
+                    $item['ranking'] = $key;
+                    $data[] = [
+                        'seasonid' => $id,
+                        'ranking' => $key,
+                        'teamname' => $item['teamname'],
+                        'playername' => $item['playername'],
+                        'goal' => $item['goal'],
+                        'penalty' => $item['penalty'],
+                    ];
+                }
+            }
+        }
+        return $data;
+    }
+
+}

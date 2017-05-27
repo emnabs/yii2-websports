@@ -88,6 +88,51 @@ class Soda extends \emhome\websports\src\BaseTranst {
             'freekick' => '任意球',
             'header' => '头球',
         ];
+        $table = preg_replace("'<table[^>]*?>'si", "", $table);
+        $table = preg_replace("'<tr[^>]*?>'si", "", $table);
+        $table = preg_replace("'<(td|th)[^>]*?>'si", "", $table);
+        $table = preg_replace("'<\/(td|th)>'si", "\t", $table);
+        $table = preg_replace("'\t<\/tr>'si", "\n", $table);
+        $string = strip_tags($table);
+        $data = [];
+        $table = explode("\n", $string);
+
+        $keys = [];
+        foreach ($table as $key => $line) {
+            $item = explode("\t", $line);
+            if (count($item) > 1) {
+                array_filter($item);
+                if (!$key) {
+                    foreach ($item as $it) {
+                        $keys[] = array_search($it, $headers);
+                    }
+                } else {
+                    $item = array_combine($keys, $item);
+                    $item['ranking'] = $key;
+                    $data[] = [
+                        'seasonid' => $id,
+                        'ranking' => $key,
+                        'teamname' => $item['teamname'],
+                        'playername' => $item['playername'],
+                        'goal' => $item['goal'],
+                        'penalty' => $item['penalty'],
+                    ];
+                }
+            }
+        }
+        return $data;
+    }
+
+    private function tableToArrayTest($table, $id) {
+        $headers = [
+            'playername' => '球员',
+            'teamname' => '球队',
+            'goal' => '进球',
+            'normal' => '普通进球',
+            'penalty' => '点球',
+            'freekick' => '任意球',
+            'header' => '头球',
+        ];
 
         $patterns = [
             0 => "'<table[^>]*?>'si",

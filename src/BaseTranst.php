@@ -141,8 +141,10 @@ abstract class BaseTranst extends Object implements ApiInterface {
         if (isset($parsedUrl['query'])) {
             $paramSplitChar = '&';
         }
-        if (is_array($param) && !empty($param)) {
+        if (!empty($param)) {
             $param = $paramSplitChar . http_build_query($param);
+        } else {
+            $param = '';
         }
         if (isset($parsedUrl['fragment'])) {
             $url = str_replace('#', $param . '#', $url);
@@ -175,8 +177,10 @@ abstract class BaseTranst extends Object implements ApiInterface {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         }
-        if (is_array($param) && !empty($param)) {
+        if (!empty($param)) {
             $param = http_build_query($param);
+        } else {
+            $param = '';
         }
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

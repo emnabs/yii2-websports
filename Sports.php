@@ -16,7 +16,7 @@ class Sports extends Component {
     /**
      * @var string BaseTranst transport instance.
      */
-    private $transportClass = 'common\components\sports\transport\Sina';
+    private $transportClass = 'emhome\websports\transport\Sina';
 
     /**
      * @var BaseTranst|array transport instance or its array configuration.
@@ -62,7 +62,7 @@ class Sports extends Component {
      */
     public function compose($config = [], $class = null) {
         if ($class !== null) {
-            $useClass = 'common\components\sports\transport\{ClassName}';
+            $useClass = 'emhome\websports\transport\{ClassName}';
             $config['class'] = str_replace('{ClassName}', ucfirst($class), $useClass);
         }
         $this->_transport = $config;

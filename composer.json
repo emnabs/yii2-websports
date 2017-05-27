@@ -1,6 +1,6 @@
 {
-    "name": "emhome/yii2-websports",
-    "description": "Yii2 Websports Api extension",
+    "name": "emnabs/yii2-websports",
+    "description": "Yii2 Websports extension",
     "keywords": ["yii2", "extension", "sports", "event", "plugin"],
     "homepage": "https://github.com/emnabs/yii2-websports",
     "type": "yii2-extension",

@@ -1,5 +1,4 @@
 # Yii2 Websports Component
-==========
 
 Provides settings for sporting events, interfaces, custom implementations, pulls, remote interfaces, and data content related to sports competitions. The basic interface implements the definition of soccer data, such as schedule, game, score list, player list.
 
@@ -9,7 +8,6 @@ Provides settings for sporting events, interfaces, custom implementations, pulls
 
 
 ## Installation
----------------
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -28,7 +26,6 @@ or add
 to the require section of your composer.json.
 
 ## Usage
---------
 
 To use this extension, you have to configure the Connection class in your application configuration:
 
@@ -53,13 +50,11 @@ Yii::$app->sports->compose()->schedule();
 ```
 
 ## 包含接口
------------
 
 * [新浪体育](http://sports.sina.com.cn/)
 * [搜达足球](http://www.sodasoccer.com/)
 
 
 ## License
-----------
 
 **yii2-websports** is released under the `BSD 3-Clause` License. See the bundled `LICENSE.md` for details.
